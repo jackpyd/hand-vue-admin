@@ -7,7 +7,9 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    // 因为element-plus的若TS版本为5.x，此处为"node"
+    "moduleResolution": "node",
+    // "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,7 +20,16 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /*Element Plus全局组件类型声明*/
+    "types": ["element-plus/global.d.ts"],
+    // 解析非相对模块的基地址，默认是当前目录
+    "baseUrl": "./",
+    "paths": {
+      //路径映射，相对于baseUrl
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
