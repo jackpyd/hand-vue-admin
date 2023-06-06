@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <svg :style="{ width: width, height: height }">
-      <use :xlink:href="prefix + name" :fill="color"></use>
-    </svg>
-  </div>
+  <svg>
+    <use :xlink:href="prefix + name" :fill="color"></use>
+  </svg>
 </template>
 
 <script setup lang="ts">
@@ -20,15 +18,15 @@ defineProps({
     type: String,
     default: '',
   },
-  //svg宽度
-  width: {
-    type: String,
-    default: '16px',
-  },
-  //svg高度
-  height: {
-    type: String,
-    default: '16px',
-  },
+  // //svg宽度
+  // width: {
+  //   type: String,
+  //   default: '16px',
+  // },
+  // //svg高度
+  // height: {
+  //   type: String,
+  //   default: '16px',
+  // },
 })
 </script>

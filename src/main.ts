@@ -7,6 +7,10 @@ import 'element-plus/theme-chalk/index.css'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import 'virtual:svg-icons-register'
 import gloablComponent from '@/components'
+// 导入路由插件
+import router from '@/router'
+// 导入pinia插件
+import pinia from '@/stores'
 
 const app = createApp(App)
 // 修改默认语言为中文
@@ -15,5 +19,9 @@ app.use(ElementPlus, {
 })
 // 安装自动注册全局组件的插件
 app.use(gloablComponent)
+// 安装路由插件
+app.use(router)
+// 安装pinia插件
+app.use(pinia)
 
 app.mount('#app')

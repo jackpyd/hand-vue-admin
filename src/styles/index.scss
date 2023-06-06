@@ -1,1 +1,10 @@
 @import 'reset.scss';
+
+// tailwindcss
+@import 'tailwind.css';
+
+// element style 必须在 tailwindcss 之后，不然样式会被 tailwindcss 覆盖
+@import 'element.scss';
+
+// 后台管理定义的 css 变量
+@import 'variable.scss';
