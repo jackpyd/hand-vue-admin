@@ -10,6 +10,7 @@ function createUserList() {
       desc: '平台管理员',
       roles: ['平台管理员'],
       buttons: ['cuser.detail'],
+      permissions: ['system', 'sys-roles'],
       routes: ['home'],
       token: 'Admin Token',
     },

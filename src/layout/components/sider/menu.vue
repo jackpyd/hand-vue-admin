@@ -1,61 +1,85 @@
 <template>
-  <el-menu
-    default-active="2"
-    :collapse="!appStore.isExpand"
-    @open="handleOpen"
-    @close="handleClose"
-  >
-    <el-sub-menu index="1">
-      <template #title>
-        <el-icon><location /></el-icon>
-        <span>Navigator One</span>
-      </template>
-      <el-menu-item-group title="Group One">
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
-      </el-menu-item-group>
-      <el-menu-item-group title="Group Two">
-        <el-menu-item index="1-3">item three</el-menu-item>
-      </el-menu-item-group>
-      <el-sub-menu index="1-4">
-        <template #title>item four</template>
-        <el-menu-item index="1-4-1">item one</el-menu-item>
+  <el-menu :default-active="route.path" :collapse="!appStore.isExpand" router>
+    <template v-for="menu in menusList" :key="menu">
+      <el-menu-item v-if="menu.meta.menu == 1" :index="menu.path">
+        <el-icon>
+          <Icon :name="menu?.meta?.icon" />
+        </el-icon>
+        <span>{{ menu.meta.title }}</span>
+      </el-menu-item>
+      <el-sub-menu v-if="menu.meta.menu == 2" :index="menu.path">
+        <template #title>
+          <el-icon><Icon :name="menu?.meta?.icon" /></el-icon>
+          <span>{{ menu.meta.title }}</span>
+        </template>
+        <template v-for="subMenu in menu.children" :key="subMenu">
+          <el-menu-item :index="menu.path + '/' + subMenu.path">
+            {{ subMenu.meta.title }}
+          </el-menu-item>
+        </template>
       </el-sub-menu>
-    </el-sub-menu>
-    <el-menu-item index="2">
-      <el-icon><icon-menu /></el-icon>
-      <span>Navigator Two</span>
-    </el-menu-item>
-    <el-menu-item index="3" disabled>
-      <el-icon><document /></el-icon>
-      <span>Navigator Three</span>
-    </el-menu-item>
-    <el-menu-item index="4">
-      <el-icon><setting /></el-icon>
-      <span>Navigator Four</span>
-    </el-menu-item>
+    </template>
   </el-menu>
 </template>
 
 <script setup lang="ts">
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
+import Icon from '@/components/SvgIcon/ElIcon.vue'
 import useAppStore from '@/stores/app'
+import useUserStore from '@/stores/user'
+import router from '@/router'
+import { useRoute } from 'vue-router'
+import { watch, ref } from 'vue'
 
+// 获取当前路由路径
+const route = useRoute()
 const appStore = useAppStore()
+const userStore = useUserStore()
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+const routesList = router.getRoutes()
+const menusList = ref()
+watch(
+  () => {
+    return userStore.isLogin
+  },
+  (now) => {
+    // 登录之后发送请求
+    if (now) {
+      const permissions = userStore.permissions
+      console.log(permissions)
+      // 挂载的时候，从权限管理的store中获取对应的权限列表，并根据权限列表生成对应的菜单栏
+      let tempMenus: any[] = []
+      // 更新数据
+      routesList.forEach((route) => {
+        let tempMenu: any
+        const menuType = route.meta.menu
+        if (menuType == 1 || menuType == 2) {
+          if (route.meta.permission) {
+            tempMenu = {
+              ...route,
+            }
+            tempMenu.children = []
+            route.children.forEach((subRoute: any) => {
+              console.log(subRoute.meta)
+              if (
+                subRoute.meta.permission &&
+                permissions.indexOf(subRoute.meta.permission) != -1
+              ) {
+                tempMenu.children.push(subRoute)
+              } else if (!subRoute.meta.permission) {
+                tempMenu.children.push(subRoute)
+              }
+            })
+          } else {
+            tempMenu = route
+          }
 
-// 挂载的时候，从权限管理的store中获取对应的权限列表，并根据权限列表生成对应的菜单栏
+          tempMenus.push(tempMenu)
+        }
+      })
+      menusList.value = tempMenus
+    }
+  },
+)
 </script>
 
 <style scoped></style>

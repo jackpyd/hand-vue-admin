@@ -24,4 +24,5 @@ app.use(router)
 // 安装pinia插件
 app.use(pinia)
 
+// 自定义权限指令
 app.mount('#app')

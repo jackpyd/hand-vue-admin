@@ -8,12 +8,23 @@
         </div>
         <el-divider>登录</el-divider>
         <div>
-          <el-form class="w-11/12 sm:w-4/5 pt-2 space-y-8 mx-auto">
+          <el-form
+            v-model="userLoginForm"
+            class="w-11/12 sm:w-4/5 pt-2 space-y-8 mx-auto"
+          >
             <el-form-item>
-              <el-input placeholder="账号" class="h-12 text-base"></el-input>
+              <el-input
+                v-model="userLoginForm.username"
+                placeholder="账号"
+                class="h-12 text-base"
+              ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-input placeholder="密码" class="h-12 text-base"></el-input>
+              <el-input
+                v-model="userLoginForm.password"
+                placeholder="密码"
+                class="h-12 text-base"
+              ></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -24,7 +35,9 @@
         </div>
         <div class="w-11/12 sm:w-4/5 mx-auto mt-5">
           <!-- 登录按钮 -->
-          <el-button type="primary" class="w-full text-xl">登录</el-button>
+          <el-button @click="login" type="primary" class="w-full text-xl">
+            登录
+          </el-button>
         </div>
         <!--系统信息简介 -->
         <div
@@ -37,6 +50,22 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { reactive } from 'vue'
+import useUserStore from '@/stores/user'
+const userStore = useUserStore()
+
+const userLoginForm = reactive({
+  username: '',
+  password: '',
+})
+
+function login() {
+  console.log(userLoginForm)
+  userStore.login(userLoginForm.username, userLoginForm.password)
+}
+
+userStore.checkLogin()
+</script>
 
 <style scoped></style>

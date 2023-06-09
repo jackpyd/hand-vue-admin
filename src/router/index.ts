@@ -8,11 +8,15 @@ const defaultRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     component: () => import('@/layout/index.vue'),
+    meta: {
+      menu: 1, // 只有一个菜单
+      title: '概览',
+      icon: 'HomeFilled',
+    },
     children: [
       {
         path: '',
         name: 'Dashboard',
-        meta: { title: '概览', icon: 'home', hidden: false },
         component: () => import('@/views/dashboard/index.vue'),
       },
     ],
@@ -22,14 +26,13 @@ const defaultRoutes: RouteRecordRaw[] = [
     name: '/',
     component: () => import('@/layout/index.vue'),
     redirect: '/dashboard', // 把根路径重定向到 dashboard
-    children: [
-      {
-        path: '/404',
-        name: '404',
-        meta: { title: '404' },
-        component: () => import('@/views/404/index.vue'),
-      },
-    ],
+  },
+  // 404没有找到
+  {
+    path: '/404',
+    name: '404',
+    meta: { title: '404', menu: 0 },
+    component: () => import('@/views/404/index.vue'),
   },
   // 登录界面
   {

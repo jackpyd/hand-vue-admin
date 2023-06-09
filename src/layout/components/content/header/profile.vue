@@ -7,7 +7,7 @@
     >
       <div class="flex lg:items-center">
         <img :src="userInfo.avatar" class="w-7 h-7 rounded-full" />
-        <div class="ml-2 hidden lg:block">{{ userInfo.name }}</div>
+        <div class="ml-2 hidden lg:block">{{ userInfo.username }}</div>
       </div>
       <template #dropdown>
         <el-dropdown-menu class="w-28">
@@ -29,11 +29,14 @@
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus'
 import { User, SwitchButton } from '@element-plus/icons-vue'
-import router from '@/router'
+
 import { reactive } from 'vue'
+import useUserStore from '@/stores/user'
+
+const userStore = useUserStore()
 const userInfo = reactive({
-  name: '张浩瀚',
-  avatar: '../../../../assets/icons/dog.svg',
+  username: '',
+  avatar: '',
 })
 
 const logout = () => {
@@ -42,9 +45,14 @@ const logout = () => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   }).then(() => {
-    router.push('/login')
+    userStore.logout()
   })
 }
+
+userStore.getUserInfo().then(() => {
+  userInfo.username = userStore.username
+  userInfo.avatar = userStore.avatar
+})
 </script>
 
 <style lang="scss" scoped></style>
