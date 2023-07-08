@@ -24,7 +24,6 @@ const defaultRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: '/',
-    component: () => import('@/layout/index.vue'),
     redirect: '/dashboard', // 把根路径重定向到 dashboard
   },
   // 404没有找到
@@ -43,15 +42,14 @@ const defaultRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/login/index.vue'),
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-].concat(moduleRoutes)
+  // todo:暂时不清楚为何报错
+].concat(moduleRoutes as any)
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: defaultRoutes,
   // 路由滚动
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     return savedPosition || { top: 0, behavior: 'smooth' }
   },
 })

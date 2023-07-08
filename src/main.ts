@@ -11,6 +11,8 @@ import gloablComponent from '@/components'
 import router from '@/router'
 // 导入pinia插件
 import pinia from '@/stores'
+// 导入cookie插件
+// import VueCookies from 'vue3-cookies'
 
 const app = createApp(App)
 // 修改默认语言为中文
@@ -23,6 +25,8 @@ app.use(gloablComponent)
 app.use(router)
 // 安装pinia插件
 app.use(pinia)
+
+// app.use(VueCookies)
 
 // 自定义权限指令
 app.mount('#app')

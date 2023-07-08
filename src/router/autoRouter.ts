@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { RouteRecordRaw } from 'vue-router'
 
-export function getModuleRoutes() {
+export function getModuleRoutes(): RouteRecordRaw[] {
   const modules = import.meta.glob('@/views/**/router.ts', {
     eager: true,
   })

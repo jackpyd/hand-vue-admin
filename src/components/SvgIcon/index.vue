@@ -1,11 +1,18 @@
 <template>
   <svg>
-    <use :xlink:href="prefix + name" :fill="color"></use>
+    <use :xlink:href="prefix + name" :fill="fill"></use>
   </svg>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { useThemeStore } from '@/stores/theme'
+import { computed } from 'vue'
+
+const themeStore = useThemeStore()
+const dark: string = '#ffff'
+const light: string = '#000000'
+
+const props = defineProps({
   //xlink:href属性值的前缀
   prefix: {
     type: String,
@@ -28,5 +35,13 @@ defineProps({
   //   type: String,
   //   default: '16px',
   // },
+})
+
+// 自适应暗夜模式
+const fill = computed(() => {
+  if (props.color) {
+    return props.color
+  }
+  return themeStore.getIsDark ? dark : light
 })
 </script>

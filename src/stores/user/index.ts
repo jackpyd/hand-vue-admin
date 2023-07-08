@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import request from '@/utils/request'
 import router from '@/router'
+import { AxiosResponse } from 'axios'
+import { ElMessage } from 'element-plus'
 const useUserStore = defineStore('userStore', {
   state: () => {
     return {
@@ -35,22 +37,31 @@ const useUserStore = defineStore('userStore', {
           username,
           password,
         },
-      }).then((response: any) => {
+      }).then((response: AxiosResponse<any, any>) => {
+        // 获取token
         const token = response.data.token
-        console.log(token)
-        this.storeToken(token)
-        this.setToken(token)
-        router.push('/')
+        if (token) {
+          // 写入本地缓存
+          this.storeToken(token)
+          this.setToken(token)
+          router.push('/')
+        } else {
+          ElMessage.error('用户名或密码错误')
+        }
       })
     },
 
     // 检查是否登录
     async checkLogin() {
       const token = await localStorage.getItem('token')
-      // 如果有token就跳转到首页
+      // 如果有token就跳转到首页，根据首页的请求状态码判断是否登录成功
+      let flag = true
       if (token) {
         router.push('/')
+      } else {
+        flag = false
       }
+      return flag
     },
 
     storeToken(token: string) {

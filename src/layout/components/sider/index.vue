@@ -1,5 +1,8 @@
 <template>
-  <div :class="siderStyle">
+  <div
+    :class="appStore.isExpand ? 'w-56' : 'w-16'"
+    class="drop-shadow-md dark:bg-slate-800 bg-gray-100 h-screen z-[1000] sm:z-0 absolute top-0 left-0 sm:fixed transition-width duration-300 ease-linear sider-bg overflow-auto"
+  >
     <logo></logo>
     <my-menu></my-menu>
   </div>
@@ -9,29 +12,13 @@
 import logo from './logo.vue'
 import MyMenu from './menu.vue' // 和menu标签冲突
 import useAppStore from '@/stores/app'
-import { watch, ref } from 'vue'
-const appStore = useAppStore()
 
-const siderStyle = ref('')
-const baseSiderStyle =
-  ' h-screen z-[1000] sm:z-0 absolute top-0 left-0 sm:fixed transition-width duration-300 ease-linear sider-bg overflow-auto'
-// 监视属性监听expand属性的变化
-watch(
-  () => {
-    return appStore.isExpand
-  },
-  () => {
-    console.log(appStore.isExpand)
-    if (appStore.isExpand) {
-      siderStyle.value = 'w-56' + baseSiderStyle
-    } else {
-      siderStyle.value = 'w-16' + baseSiderStyle
-    }
-  },
-  {
-    immediate: true,
-  },
-)
+const appStore = useAppStore()
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 去除自带样式 */
+.el-menu {
+  border-right: none;
+}
+</style>

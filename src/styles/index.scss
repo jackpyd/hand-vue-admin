@@ -1,7 +1,7 @@
 @import 'reset.scss';
 
 // tailwindcss
-@import 'tailwind.css';
+@import 'tailwind.scss';
 
 // element style 必须在 tailwindcss 之后，不然样式会被 tailwindcss 覆盖
 @import 'element.scss';

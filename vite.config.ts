@@ -17,6 +17,7 @@ export default defineConfig(({ command }: ConfigEnv) => {
       viteMockServe({
         enable: command === 'serve',
       }),
+
       // 没用
       // requireTransform({
       //   fileRegex: /.vue$|.js$|.mjs$|.ts$|.tsx$/,
@@ -24,7 +25,7 @@ export default defineConfig(({ command }: ConfigEnv) => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve('./src'), // 相对路径别名配置，使用 @ 代替 src
+        '@': path.resolve(__dirname, './src'), // 相对路径别名配置，使用 @ 代替 src
       },
     },
     css: {
